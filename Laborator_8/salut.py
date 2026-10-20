@@ -1,1 +1,1 @@
-print("Salut, GitHub!")
+print("Salut, GitHub din Laborator_8!")
