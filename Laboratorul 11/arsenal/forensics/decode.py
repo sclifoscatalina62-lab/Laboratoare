@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 import argparse
 import base64
 import hashlib
@@ -6,7 +6,7 @@ import json
 import re
 from urllib.parse import unquote
 
-# A2: Ghicește stratul de codare[cite: 1]
+# A2: Ghicește stratul de codare
 def ghici_strat(s):
     if "%" in s:
         return "url"
@@ -16,7 +16,7 @@ def ghici_strat(s):
         return "base64"
     return "necunoscut"
 
-# A3: Desface un singur strat[cite: 1]
+# A3: Desface un singur strat
 def desfa(s):
     strat = ghici_strat(s)
     try:
@@ -30,11 +30,11 @@ def desfa(s):
         pass
     return "necunoscut", s.encode("utf-8")
 
-# A4: Verifică dacă toți octeții sunt caractere ASCII imprimabile (32..126)[cite: 1]
+# A4: Verifică dacă toți octeții sunt caractere ASCII imprimabile (32..126)
 def citibil(b):
     return len(b) > 0 and all(32 <= c < 127 for c in b)
 
-# A4: Decodificare în buclă până la text clar[cite: 1]
+# A4: Decodificare în buclă până la text clar
 def decodifica_straturi(val_initiala):
     val = val_initiala
     straturi_aplicate = []
@@ -53,7 +53,7 @@ def decodifica_straturi(val_initiala):
         val = val_text
     return straturi_aplicate, val
 
-# A5: Sparge XOR cu cheie de 1 octet (ignore cheia 0 dacă nu e cazul)[cite: 1]
+# A5: Sparge XOR cu cheie de 1 octet (ignore cheia 0 dacă nu e cazul)
 def sparge_xor(date_binare):
     for k in range(1, 256):  # Incepem de la 1, deoarece 0 nu schimba datele
         clar = bytes(b ^ k for b in date_binare)
@@ -61,7 +61,7 @@ def sparge_xor(date_binare):
             return k, clar.decode("utf-8")
     return None, None
 
-# A6: Sparge hash prin dicționar (MD5/SHA1/SHA256)[cite: 1]
+# A6: Sparge hash prin dicționar (MD5/SHA1/SHA256)
 def sparge_hash(hash_tinta, cale_wordlist):
     lungime = len(hash_tinta)
     try:
@@ -83,7 +83,7 @@ def sparge_hash(hash_tinta, cale_wordlist):
         pass
     return None
 
-# A7: Interfață din linia de comandă și salvare JSON[cite: 1]
+# A7: Interfață din linia de comandă și salvare JSON
 def main():
     p = argparse.ArgumentParser(description="Decoder universal forensics")
     p.add_argument("intrare", help="Sirul de caractere sau calea catre fisier")
@@ -127,7 +127,7 @@ def main():
             "straturi": straturi,
             "rezultat": text_clar
         }
-    # Salveaza fisa.json[cite: 1]
+    # Salveaza fisa.json
     with open("arsenal/forensics/fisa.json", "w", encoding="utf-8") as f:
         json.dump(rezultat_fisa, f, indent=4)
     print("Rezultat procesare:")
